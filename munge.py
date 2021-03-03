@@ -50,7 +50,7 @@ stdout_orig = sys.stdout
 def fmt_for_attendance(df):
     return(f"    {df['firstname']} {df['lastname_now']} ({df['lastname_school']}): {df['interest']}")
 
-with open('registrants-by-attendance.txt', 'w') as fh:
+with open('out/registrants-by-attendance.txt', 'w') as fh:
     sys.stdout = fh
     print("Registrants by attendance:")
     print()
@@ -60,7 +60,7 @@ with open('registrants-by-attendance.txt', 'w') as fh:
             "No, but send me the information to buy a streaming ticket!"
     ]:
         people = df[df['ready'] == ans]
-        print(f"{ans} ({len(people)} registrants)")
+        print(f"{ans} ({len(people)} registrant(s))")
         for i, person in people.iterrows():
             print(fmt_for_attendance(person))
         print()
