@@ -51,7 +51,7 @@ def fmt_for_attendance(df):
     output = 8*" " + f"{df['firstname']} {df['lastname_now']} ({df['lastname_school']})"
     output += "\n"
     if df['cast_in'] != '':
-        output += 12*" " + f"Cast: {df['voicepart']} in {df['cast_in']}"
+        output += 12*" " + f"Cast: {df['cast_in']}"
     if df['pit_in'] != '':
         output += 12*" " + f"Pit: {df['pit_in']}"
     if df['crew_in'] != '':
