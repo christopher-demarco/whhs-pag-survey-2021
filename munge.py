@@ -48,24 +48,77 @@ stdout_orig = sys.stdout
 
 ##### Attendance
 def fmt_for_attendance(df):
-    return(f"    {df['firstname']} {df['lastname_now']} ({df['lastname_school']}): {df['interest']}")
+    return(8*" " + f"{df['firstname']} {df['lastname_now']} ({df['lastname_school']})")
 
 with open('out/registrants-by-attendance.txt', 'w') as fh:
-    sys.stdout = fh
+    sys.stdout = stdout_orig #fh
     print("Registrants by attendance:")
     print()
-    for ans in [
+    for attendance in [
             "Absolutely!  I'll be there if it happens!",
             "I need to know more - I'll decide later.",
-            "No, but send me the information to buy a streaming ticket!"
     ]:
-        people = df[df['ready'] == ans]
-        print(f"{ans} ({len(people)} registrant(s))")
-        for i, person in people.iterrows():
-            print(fmt_for_attendance(person))
+        people = df[df['ready'] == attendance]
+        print(f"{attendance} ({len(people)} total)")
+
+        interested_people = people[people['interest'] == 'Cast']
+        interested_people = interested_people[interested_people['lead'] == 'Yes']
+        if int(len(interested_people)) > 0:
+            print(f"    Interested in Lead ({len(interested_people)} total):")
+            for i, person in interested_people.iterrows():
+                print(fmt_for_attendance(person))
+
+        interested_people = people[people['interest'] == 'Cast']
+        interested_people = interested_people[interested_people['lead'] == 'Would accept one if necessary']
+        if int(len(interested_people)) > 0:
+            print(f"    Interested in Lead if necessary ({len(interested_people)} total):")
+            for i, person in interested_people.iterrows():
+                print(fmt_for_attendance(person))                
+
+        interested_people = people[people['interest'] == 'Cast']
+        if len(interested_people) > 0:
+            print(f"    Interested in Cast ({len(interested_people)} total):")
+            for i, person in interested_people.iterrows():
+                print(fmt_for_attendance(person))
+
+        for interest in ["Crew", "Orchestra", "Just showing up for the fun!"]:
+            interested_people = people[people['interest'] == interest]
+            if len(interested_people) > 0:
+                print(f"    Interested in {interest} ({len(interested_people)} total):")
+                for i, person in interested_people.iterrows():
+                    print(fmt_for_attendance(person))
         print()
 
+    attendance = 'No, but send me the information to buy a streaming ticket!'
+    people = df[df['ready'] == attendance]
+    print(f"{attendance} ({len(people)} total)")
+    for i, person in people.iterrows():
+        print(fmt_for_attendance(person))
 
 
-#import pudb ; pudb.set_trace()
+# ##### Interest
+# def fmt_for_interest(df):
+#     return("slkdfj")
 
+# with open('out/registrants-by-interest.txt', 'w') as fh:
+#     sys.stdout = stdout_orig # fh
+#     print("Registrants by interest:")
+
+#     for attendance in [
+#             "Absolutely!  I'll be there if it happens!",
+#             "I need to know more - I'll decide later.",
+#             "No, but send me the information to buy a streaming ticket!"
+#     ]:
+#         print(f"    {attendance}:")
+        
+#         people = df[df['ready'] == attendance]
+#         for interest in [
+#             "Cast",
+#             "Crew",
+#             "Orchestra",
+#             "Just showing up for the fun!"
+#         ]:
+#             interests = people[people['interest'] == interest]
+#             for i, person in interests.iterrows():
+#                 print(fmt_for_interest(person))
+#         print()
