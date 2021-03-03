@@ -48,7 +48,14 @@ stdout_orig = sys.stdout
 
 ##### Attendance
 def fmt_for_attendance(df):
-    output = 8*" " + f"{df['firstname']} {df['lastname_now']} ({df['lastname_school']})")
+    output = 8*" " + f"{df['firstname']} {df['lastname_now']} ({df['lastname_school']})"
+    output += "\n"
+    if df['cast_in'] != '':
+        output += 12*" " + f"Cast: {df['voicepart']} in {df['cast_in']}"
+    if df['pit_in'] != '':
+        output += 12*" " + f"Pit: {df['pit_in']}"
+    if df['crew_in'] != '':
+        output += 12*" " + f"Crew: {df['crew_in']}"
     return output
 
 with open('out/registrants-by-attendance.txt', 'w') as fh:
@@ -82,7 +89,7 @@ with open('out/registrants-by-attendance.txt', 'w') as fh:
             for i, person in interested_people.iterrows():
                 print(fmt_for_attendance(person))
 
-        for interest in ["Crew", "Orchestra", "Just showing up for the fun!"]:
+        for interest in ["Crew", "Pit", "Just showing up for the fun!"]:
             interested_people = people[people['interest'] == interest]
             if len(interested_people) > 0:
                 print(f"    Interested in {interest} ({len(interested_people)} total):")
@@ -116,7 +123,7 @@ with open('out/registrants-by-attendance.txt', 'w') as fh:
 #         for interest in [
 #             "Cast",
 #             "Crew",
-#             "Orchestra",
+#             "Pit",
 #             "Just showing up for the fun!"
 #         ]:
 #             interests = people[people['interest'] == interest]
