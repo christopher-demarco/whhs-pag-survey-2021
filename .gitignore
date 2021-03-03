@@ -1,2 +1,4 @@
 venv
 responses.csv
+responses_preprocessed.csv
+.DS_Store

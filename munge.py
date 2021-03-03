@@ -9,6 +9,11 @@ import sys
 import numpy as np
 import pandas as pd
 
+with open('responses.csv', 'r') as infile:
+    with open('responses_preprocessed.csv' ,'w') as outfile:
+        for line in infile.readlines():
+            outfile.write(line.replace('Hello, ', 'Hello '))
+
 col_names = [
     'timestamp',
     'paid',
@@ -38,11 +43,9 @@ col_names = [
     'gopher',
     'addl_expertise',
     ]
-df = pd.read_csv('responses.csv', names=col_names, skiprows=[0])
+df = pd.read_csv('responses_preprocessed.csv', quotechar='"', names=col_names, skiprows=[0])
 df = df.replace(np.nan, '')
 
-
-def section(): print(40*'=')
 
 stdout_orig = sys.stdout
 
@@ -59,7 +62,7 @@ def fmt_for_attendance(df):
     return output
 
 with open('out/registrants-by-attendance.txt', 'w') as fh:
-    sys.stdout = stdout_orig #fh
+    sys.stdout = fh
     print("Registrants by attendance:")
     print()
     for attendance in [
@@ -104,29 +107,53 @@ with open('out/registrants-by-attendance.txt', 'w') as fh:
         print(fmt_for_attendance(person))
 
 
-# ##### Interest
-# def fmt_for_interest(df):
-#     return("slkdfj")
 
-# with open('out/registrants-by-interest.txt', 'w') as fh:
-#     sys.stdout = stdout_orig # fh
-#     print("Registrants by interest:")
+##### Shows
+with open('out/unrepresented-shows.txt', 'w') as fh:
+    shows_responded = []
+    sys.stdout = fh
+    for idx, row in df[['cast_in', 'crew_in', 'pit_in']].iterrows():
+        for subrow in row:
+            for show in subrow.split(', '):
+                shows_responded.append(show)
+    shows_responded = set(shows_responded)
 
-#     for attendance in [
-#             "Absolutely!  I'll be there if it happens!",
-#             "I need to know more - I'll decide later.",
-#             "No, but send me the information to buy a streaming ticket!"
-#     ]:
-#         print(f"    {attendance}:")
-        
-#         people = df[df['ready'] == attendance]
-#         for interest in [
-#             "Cast",
-#             "Crew",
-#             "Pit",
-#             "Just showing up for the fun!"
-#         ]:
-#             interests = people[people['interest'] == interest]
-#             for i, person in interests.iterrows():
-#                 print(fmt_for_interest(person))
-#         print()
+    print(f"Unrepresented shows:")
+    for s in set(
+            set(
+                [
+                    "Fiddler on the Roof",
+                    "Hello Dolly 1989",
+                    "Anything Goes 1990",
+                    "Guys and Dolls",
+                    "Li'l Abner",
+                    "Peter Pan 1993",
+                    "Annie Get Your Gun",
+                    "Jesus Christ Superstar 1995",
+                    "The Music Man",
+                    "Man of La Mancha",
+                    "Pirates of Penzance",
+                    "The King and I",
+                    "On the 20th Century",
+                    "Evita",
+                    "Hello Dolly 2003",
+                    "Anything Goes 2004",
+                    "Seussical",
+                    "Pippin",
+                    "Les Miserables",
+                    "Beauty and the Beast",
+                    "The Wizard of Oz",
+                    "Annie",
+                    "The Phantom of the Opera",
+                    "Curtains",
+                    "Young Frankenstein",
+                    "Sweeney Todd",
+                    "Peter Pan 2016",
+                    "Spamalot",
+                    "The Drowsy Chaperone",
+                    "Mamma Mia",
+                    "Jesus Christ Superstar 2020",
+                    "Jesus Christ Superstar 2021"
+                ]
+            ) - shows_responded):
+        print(4*' '+s)
