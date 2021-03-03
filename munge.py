@@ -48,7 +48,8 @@ stdout_orig = sys.stdout
 
 ##### Attendance
 def fmt_for_attendance(df):
-    return(8*" " + f"{df['firstname']} {df['lastname_now']} ({df['lastname_school']})")
+    output = 8*" " + f"{df['firstname']} {df['lastname_now']} ({df['lastname_school']})")
+    return output
 
 with open('out/registrants-by-attendance.txt', 'w') as fh:
     sys.stdout = stdout_orig #fh
