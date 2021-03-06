@@ -56,7 +56,7 @@ if sys.argv[0].endswith('shell.py'):
 
 def indent(input, num=1, char=' '): return num * 4 * char + input
 
-def version_str(): return f"Revision {version} ({date.today().strftime('%d %b %Y')})"
+def version_str(): return f"Revision {version} ({date.today().strftime('%d %b %Y')})\n\n"
 
 ##### Attendance
 def fmt_person(df):
@@ -81,7 +81,6 @@ with open('out/registrants-by-attendance.txt', 'w') as fh:
     sys.stdout = fh
     print("Registrants by attendance:")
     print(version_str())
-    print()
     for attendance in [
             "Absolutely!  I'll be there if it happens!",
             "I need to know more - I'll decide later.",
@@ -164,7 +163,6 @@ with open('out/questions.txt', 'w') as fh:
     sys.stdout = fh
     print(f"Questions:")
     print(version_str())
-    print()
     for l in df[
             ~df.questions.isin(
                 [
