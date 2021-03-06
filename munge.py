@@ -162,3 +162,20 @@ with open('out/unrepresented-shows.txt', 'w') as fh:
                 ]
             ) - shows_responded):
         print(indent(s))
+
+
+##### Questions
+with open('out/questions.txt', 'w') as fh:
+    sys.stdout = fh
+    print(f"Questions:")
+    print(version_str())
+    print()
+    for l in df[
+            ~df.questions.isin(
+                [
+                    '', 'None', 'N/a', 'None at this time', 'None really',
+                ])]['questions']:
+        print(f"{l}\n")
+    
+
+    
