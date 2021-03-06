@@ -54,7 +54,7 @@ stdout_orig = sys.stdout
 if sys.argv[0].endswith('shell.py'):
     import pudb ; pudb.set_trace()
 
-def indent(input, num=1, char=' '): return num * 4 * char + input
+def indent(input, num=1, char=' '): return num * 8 * char + input
 
 def version_str(): return f"Revision {version} ({date.today().strftime('%d %b %Y')})\n\n"
 
@@ -155,7 +155,7 @@ with open('out/unrepresented-shows.txt', 'w') as fh:
                     "Jesus Christ Superstar 2021"
                 ]
             ) - shows_responded):
-        print(indent(s))
+        print(s)
 
 
 ##### Questions
